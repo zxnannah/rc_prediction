@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(ekf_prediction)
+project(posi_read)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -20,26 +20,24 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(Eigen3 REQUIRED)
-
-add_executable(ekf_prediction src/ekf_prediction.cpp src/ekf_prediction_node.cpp src/ekf_filter.cpp)
-ament_target_dependencies(ekf_prediction rclcpp geometry_msgs Eigen3)
-
-# 安装节点
-install(TARGETS ekf_prediction
-  DESTINATION lib/${PROJECT_NAME}
-)
 
 include_directories(
   include
-  ${EIGEN3_INCLUDE_DIRS}
+  src
+  )
+
+add_executable(posi_read src/posi_read.cpp
+                              src/posi_read_node.cpp)
+
+ament_target_dependencies(posi_read rclcpp std_msgs geometry_msgs)
+
+install(TARGETS posi_read
+  DESTINATION lib/${PROJECT_NAME}
 )
 
-install(
-  DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}/
+install(DIRECTORY include/
+  DESTINATION include/
 )
-
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
